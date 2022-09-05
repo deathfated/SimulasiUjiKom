@@ -6,18 +6,29 @@ namespace Deathfated.MatchPicture.Gameplay
 {
     public class InputRaycast : MonoBehaviour
     {
-        public Camera cam;
+        private Camera cam;
 
-        private void Start()
+        private void Awake()
         {
-            RaycastHit hit;
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            cam = Camera.main;
+        }
 
-            if (Physics.Raycast(ray, out hit, 100))
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                Transform objectHit = hit.transform;
+                RaycastObject(Input.mousePosition);
+            }
+        }
 
-                //do
+        private void RaycastObject(Vector2 screenPos)
+        {
+            Vector2 worldPosition = cam.ScreenToWorldPoint(screenPos);
+            var hit = Physics2D.Raycast(worldPosition, Vector2.zero);
+            if(hit.collider != null)
+            {
+                IRaycastable raycastableObj = hit.collider.GetComponent<IRaycastable>();
+                raycastableObj?.OnRaycasted();
             }
         }
     }

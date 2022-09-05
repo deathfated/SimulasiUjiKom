@@ -21,6 +21,11 @@ namespace Deathfated.MatchPicture.Gameplay
             float _timeRounded = Mathf.RoundToInt(_time);
             _textTimer.text = $"{_timeRounded + "s"}";
             _time -= Time.deltaTime;
+
+            if (_time <= 0)
+            {
+                //game over event
+            }
         }
     }
 }
